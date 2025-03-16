@@ -1,4 +1,4 @@
-SEGMENT .DATA
+SECTION .data
     LF          equ 0xA ; Pular linha
     NULL        equ 0xD ; Final da string
     SYS_CALL    equ 0x80 ; Envia informação ao SO   
@@ -13,10 +13,51 @@ SEGMENT .DATA
     STD_IN      equ 0x0 ; Entrada padrão
     STD_OUT     equ 0x1 ; Saída padrão
 
-SECTION .DATA
-    msg db "Entre com seu nome:", LF, NULL ;String com quebra de linha e nulo de encerramento de comando
-    tam equ $- msg ; Referencia o tamanho do string passado
+    ; Constantes
+    x dd 50
+    y dd 10
+    msg1 db 'X maior que Y', LF, NULL
+    tam1 equ $- msg1
+    msg2 db 'Y maior que X', LF, NULL
+    tam2 equ $- msg2
+    msg3 db 'Y e X são iguais', LF, NULL
+    tam3 equ $- msg3
 
-SECTION .BSS
-    msg db "Entre com seu nome:", LF, NULL
-    tam equ $- msg
+SECTION .text
+
+global _start ; label de inicio obrigatória (tem que ser minúsculo)
+
+_start:
+    mov EAX, [x]
+    mov EBX, [y]
+    ; if em assembly
+    cmp EAX, EBX ; instrução de comparação
+    ; Instruções de salto condicional 
+    ; je = | jg > | jge >= | jl < | jle <= | jne !=
+    jg maior ;EAX > EBX
+    ; Instruções de salto incondicional 
+    ; jmp
+    je igual ;EAX = EBX
+    ; Instruções de salto incondicional 
+    ; jmp
+    mov ECX, msg2
+    mov EDX, tam2
+    jmp final
+
+maior:
+    mov ECX, msg1
+    mov EDX, tam1
+    jmp final
+
+igual:
+    mov ECX, msg3
+    mov EDX, tam3
+
+final:
+    mov EAX, SYS_WRITE
+    mov EBX, STD_OUT
+    int SYS_CALL
+
+    mov EAX, SYS_EXIT
+    xor EBX, EBX
+    int SYS_CALL
