@@ -34,12 +34,11 @@ _start:
     cmp EAX, EBX ; instrução de comparação
     ; Instruções de salto condicional 
     ; je = | jg > | jge >= | jl < | jle <= | jne !=
+    ; Instruções de salto incondicional 
+    ; jmp
     jg maior ;EAX > EBX
-    ; Instruções de salto incondicional 
-    ; jmp
     je igual ;EAX = EBX
-    ; Instruções de salto incondicional 
-    ; jmp
+   
     mov ECX, msg2
     mov EDX, tam2
     jmp final
@@ -53,7 +52,7 @@ igual:
     mov ECX, msg3
     mov EDX, tam3
 
-final:
+final: ;Encerra o programa 
     mov EAX, SYS_WRITE
     mov EBX, STD_OUT
     int SYS_CALL
